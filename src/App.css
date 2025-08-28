@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 100vh;
 }
 
 .App-logo {
@@ -35,4 +39,71 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Canvas styles */
+.canvas {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  flex: 1;
+}
+
+/* Info panel styles */
+.info {
+  max-height: 100vh;
+  overflow-y: auto;
+  margin: 2px;
+  flex: 0 0 20%;
+  text-align: left;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-left: 1px solid #ddd;
+}
+
+.info h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info li {
+  background-color: #dbdbdb;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.info li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.info li.selected {
+  background-color: #cacaff;
+}
+
+.ruin-list-container {
+  margin-top: 10px;
+}
+
+.ruin-list-container ul li { 
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.path-list-container {
+  margin-top: 10px;
+
+}
+
+.path-list-container ul summary, .path-list-container ul li{
+  font-size: 0.8em;
+  font-weight: 600;
 }

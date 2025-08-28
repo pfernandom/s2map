@@ -11,3 +11,115 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.App {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.canvas {
+  margin: 1em;
+}
+
+.info {
+  margin: 1em;
+}
+
+
+.item-20 {
+  flex: 30; /* Assign a flex-grow factor of 20 */
+
+}
+
+.item-80 {
+  flex: 70; /* Assign a flex-grow factor of 80 */
+
+}
+
+#demo {
+  background-size: cover; /* or contain, 100% 100%, etc. */
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+ul#paths {
+  list-style: none;
+  padding: 0;
+}
+
+#info {
+  max-height: 100vh;
+  overflow-y: auto;
+  margin: 2px;
+}
+
+
+#info details {
+  padding: 5px;
+}
+
+
+.path:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.path {
+  background-color: #dbdbdb;
+}
+
+.path-item {
+  padding: 0.2em;
+  background-color: #cacaff;
+  display: block;
+}
+
+.path-filter {
+  background-color: #b49bff;
+  padding: 0.2em;
+  margin: 0.2em;
+  padding: 0.2em;
+  display: flex;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: 600;
+  justify-content: space-between;
+}
+.path-filter button {
+
+  border-radius: 1em;
+  border: none;
+  background-color: #b49bff;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 600;
+  cursor: pointer;
+  height: 2em;
+  width: 2em;
+}
+
+.path-filter button:hover {
+  background-color: #9b80ff;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.large-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
