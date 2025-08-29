@@ -119,6 +119,22 @@ export default function Canvas({ className, polygons, size }) {
           }
         }}
       />
+      <div className="box-series-container">
+        <div className="box-series">
+          <div className="box">
+            <span style={{ backgroundColor: HOVER_USED_COLOR }}></span>
+            <span>Used</span>
+          </div>
+          <div className="box">
+            <span style={{ backgroundColor: HOVER_COLOR }}></span>
+            <span>Available</span>
+          </div>
+          <div className="box">
+            <span style={{ backgroundColor: SELECTED_COLOR }}></span>
+            <span>Part of a path</span>
+          </div>
+        </div>
+      </div>
 
       <Modal isModalOpen={isModalOpen} />
     </>

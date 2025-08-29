@@ -24,8 +24,8 @@ export function nodeFilter(nodeId) {
   };
 }
 
-export const EMPTY_MAP = "map-s21.png";
-export const CURRENT_MAP = "current_map.png";
+export const EMPTY_MAP = "/s2map/map-s21.png";
+export const CURRENT_MAP = "/s2map/current_map.png";
 
 export function MapContextProvider({ children }) {
   const [paths, setPaths] = useState([]);
@@ -48,7 +48,7 @@ export function MapContextProvider({ children }) {
   }, [polygons]);
 
   useEffect(() => {
-    fetch("polygon.json")
+    fetch("/s2map/polygon.json")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -66,6 +66,14 @@ export function MapContextProvider({ children }) {
         setRuinById(locById);
       });
   }, []);
+
+  const filteredPaths = useMemo(
+    () =>
+      paths.filter((path) =>
+        pathFilters.every((filter) => filter.filter(path))
+      ),
+    [paths, pathFilters]
+  );
 
   return (
     <MapContext.Provider
@@ -91,6 +99,7 @@ export function MapContextProvider({ children }) {
         setShowOverlay,
         mapImg,
         setMapImg,
+        filteredPaths,
       }}
     >
       {children}

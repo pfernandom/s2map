@@ -81,26 +81,59 @@ function MapView() {
   );
 }
 
+function HelpOverlay({ children, className }) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className={`help-overlay ${className}`}>
+      <span
+        className="help-overlay-icon"
+        onMouseEnter={() => {
+          setShow(!show);
+        }}
+        onMouseLeave={() => {
+          setShow(false);
+        }}
+      >
+        &#10067;
+      </span>
+      <div
+        className={`help-overlay-content ${
+          show ? "overlay-visible" : "overlay-hidden"
+        }`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function SearchBox() {
-  const { paths, pathFilters, addPathFilter, setPathFilters } =
+  const { pathFilters, addPathFilter, setPathFilters, filteredPaths } =
     useContext(MapContext);
 
   const effects = useMemo(() => {
-    return [...new Set(paths.map((path) => path.map((p) => p.effect)).flat())];
-  }, [paths]);
+    return [
+      ...new Set(filteredPaths.map((path) => path.map((p) => p.effect)).flat()),
+    ];
+  }, [filteredPaths]);
 
   return (
     <div className="flex-row">
-      <input
-        type="text"
-        id="effect-input"
-        list="effects"
-        onChange={(e) => {
-          if (effects.includes(e.target.value)) {
-            addPathFilter(effectFilter(e.target.value));
-          }
-        }}
-      />
+      <div className="flex-row">
+        <label>
+          Filter by effect:
+          <input
+            type="text"
+            id="effect-input"
+            list="effects"
+            onChange={(e) => {
+              if (effects.includes(e.target.value)) {
+                addPathFilter(effectFilter(e.target.value));
+              }
+            }}
+          />
+        </label>
+      </div>
       <datalist id="effects">
         {effects.map((effect) => (
           <option key={effect} value={effect}>
@@ -109,7 +142,13 @@ function SearchBox() {
         ))}
       </datalist>
       {pathFilters.length > 0 && (
-        <button onClick={() => setPathFilters([])}>Clear</button>
+        <button
+          title="Clear all filters"
+          className="control-btn"
+          onClick={() => setPathFilters([])}
+        >
+          Clear
+        </button>
       )}
     </div>
   );
@@ -130,7 +169,12 @@ function RuinList() {
 
   return (
     <details open className="ruin-list-container">
-      <summary className="large-title">Ruins</summary>
+      <summary>
+        <span className="large-title">Ruins</span>
+        <HelpOverlay className="ruin-list-help-overlay">
+          A list of all ruins on the map by level and effect.
+        </HelpOverlay>
+      </summary>
       <ul
         style={{ listStyleType: "none", maxHeight: "40vh", overflowY: "auto" }}
       >
@@ -150,29 +194,22 @@ function RuinList() {
 
 function PathList() {
   const {
-    paths,
     pathFilters,
     setHighlightedPath,
     setSelectedPolygon,
     setPathFilters,
     ruinById,
+    filteredPaths,
   } = useContext(MapContext);
-
-  const filteredPaths = useMemo(
-    () =>
-      paths.filter((path) =>
-        pathFilters.every((filter) => filter.filter(path))
-      ),
-    [paths, pathFilters]
-  );
-
-  if (filteredPaths.length === 0) {
-    return <p>No paths found matching filters</p>;
-  }
 
   return (
     <details open className="path-list-container">
-      <summary className="large-title">Paths</summary>
+      <summary>
+        <span className="large-title">Paths</span>
+        <HelpOverlay className="path-list-help-overlay">
+          A list of all paths from a ruin LVL 1 to LVL 4.
+        </HelpOverlay>
+      </summary>
       <SearchBox />
 
       {pathFilters.length > 0 && (
@@ -184,6 +221,7 @@ function PathList() {
               </span>
 
               <button
+                title="Remove filter"
                 onClick={() =>
                   setPathFilters((prev) => prev.filter((f) => f !== filter))
                 }
@@ -204,15 +242,26 @@ function PathList() {
       >
         {filteredPaths.map((path) => (
           <li
+            className="path-item"
             key={path.map((p) => p.id).join(",")}
             onMouseEnter={() => {
-              console.log("mouse over", path);
               setHighlightedPath(path);
             }}
             onMouseLeave={() => setHighlightedPath(null)}
           >
             <details>
               <summary>{path.map((p) => p.level).join(" -> ")}</summary>
+              <div className="path-actions">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      path.map((p) => nodeToLabel(p)).join(" -> ")
+                    );
+                  }}
+                >
+                  &#x2398; Copy
+                </button>
+              </div>
               <ul>
                 {path.map((p) => (
                   <li
@@ -228,6 +277,7 @@ function PathList() {
           </li>
         ))}
       </ul>
+      {filteredPaths.length === 0 && <p>No paths found matching filters</p>}
     </details>
   );
 }
